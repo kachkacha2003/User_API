@@ -12,7 +12,7 @@ using MyWalletApi.Data;
 namespace MyWalletApi.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20241106203820_userMigration")]
+    [Migration("20241106215232_userMigration")]
     partial class userMigration
     {
         /// <inheritdoc />
@@ -34,13 +34,17 @@ namespace MyWalletApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.ToTable("Users");
                 });

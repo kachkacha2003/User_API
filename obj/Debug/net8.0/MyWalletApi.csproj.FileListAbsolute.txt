@@ -140,3 +140,8 @@ C:\Users\lasha_kachkacha\source\repos\MyWalletApi\MyWalletApi\obj\Debug\net8.0\r
 C:\Users\lasha_kachkacha\source\repos\MyWalletApi\MyWalletApi\obj\Debug\net8.0\MyWalletApi.pdb
 C:\Users\lasha_kachkacha\source\repos\MyWalletApi\MyWalletApi\obj\Debug\net8.0\MyWalletApi.genruntimeconfig.cache
 C:\Users\lasha_kachkacha\source\repos\MyWalletApi\MyWalletApi\obj\Debug\net8.0\ref\MyWalletApi.dll
+C:\Users\lasha_kachkacha\source\repos\MyWalletApi\MyWalletApi\obj\Debug\net8.0\MyWalletApi.sourcelink.json
+C:\Users\lasha_kachkacha\source\repos\MyWalletApi\MyWalletApi\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\lasha_kachkacha\source\repos\MyWalletApi\MyWalletApi\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\lasha_kachkacha\source\repos\MyWalletApi\MyWalletApi\bin\Debug\net8.0\DotNetEnv.dll
+C:\Users\lasha_kachkacha\source\repos\MyWalletApi\MyWalletApi\bin\Debug\net8.0\Sprache.dll

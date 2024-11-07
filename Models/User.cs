@@ -1,18 +1,30 @@
-﻿namespace MyWalletApi.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MyWalletApi.Models
 {
     public class User
     {
-        Guid Id { get; set; }
+        [Key]
+        public Guid Id { get; set; }
+
+
+        [Required(ErrorMessage = " UserName field is required.")]
+        [StringLength(50, ErrorMessage = "UserName must be at most 50 characters.")]
+
         public string Username { get; set; }
+
+        [Required(ErrorMessage = "The Email field is required.")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address.")]
         public string Email { get; set; }
-        public string PasswordHash { get; set; }
+        [Required(ErrorMessage = "Password field is required.")]
+        public string Password { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
-        public User(string username,string email,string passwordHash)
+        public User(string username,string email,string password)
         {
             Username = username;
             Email = email;
-            PasswordHash = passwordHash;
+            Password = password;
             Id = Guid.NewGuid();
             
         }
