@@ -26,6 +26,15 @@ namespace MyWalletApi.UserRepository
           
         }
 
+        public async Task DeleteUser(User user)
+        {
+           
+                data.Users.Remove(user);
+                await data.SaveChangesAsync();
+            
+           
+        }
+
         public async Task<List<UserDto>> GetAllUsers()
         {
 

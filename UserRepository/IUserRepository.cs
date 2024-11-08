@@ -1,4 +1,6 @@
 ﻿using MyWalletApi.Dtos;
+using MyWalletApi.Models;
+using System;
 
 namespace MyWalletApi.UserRepository
 {
@@ -6,5 +8,6 @@ namespace MyWalletApi.UserRepository
     {
         Task AddUser(CreateUserDto createUserDto);
         Task <List<UserDto>> GetAllUsers();
+        Task DeleteUser(User id);
     }
 }
