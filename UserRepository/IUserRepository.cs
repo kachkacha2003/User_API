@@ -9,5 +9,8 @@ namespace MyWalletApi.UserRepository
         Task AddUser(CreateUserDto createUserDto);
         Task <List<UserDto>> GetAllUsers();
         Task DeleteUser(User id);
+        String GenerateToken(User user);
+
+        Task<string>  LoginUser(LoginUserDto loginUser); 
     }
 }
