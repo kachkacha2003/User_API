@@ -52,8 +52,11 @@ namespace MyWalletApi.UserRepository
             return mapper.Map<List<UserDto>>(users);
         }
 
-       
-
-       
+        public  async Task<UserDto> GetById(Guid id)
+        {
+            var user = await data.Users.FirstOrDefaultAsync(person => person.Id == id);
+            return mapper.Map<UserDto>(user);
+            
+        }
     }
 }

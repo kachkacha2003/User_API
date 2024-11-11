@@ -45,6 +45,17 @@ namespace MyWalletApi.Controllers
             return Ok(users);
         }
 
+        [HttpGet("{id}")]
+        public async Task <ActionResult> UserById(Guid id)
+        {
+            var result = await _userRepository.GetById(id);
+            if(result == null)
+            {
+                return BadRequest("invalid id");
+            }
+            return Ok(result);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(Guid id)
         {
