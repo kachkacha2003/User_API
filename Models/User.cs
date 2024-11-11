@@ -28,5 +28,7 @@ namespace MyWalletApi.Models
             Id = Guid.NewGuid();
             
         }
+        public ICollection<RefreshToken> RefreshTokens { get; set; }
+
     }
 }

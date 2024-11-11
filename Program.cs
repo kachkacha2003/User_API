@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MyWalletApi.Data;
 using MyWalletApi.Mapping;
+using MyWalletApi.Services;
 using MyWalletApi.UserRepository;
 using System.Text;
 
@@ -37,6 +38,7 @@ if (string.IsNullOrEmpty(key))
 }
 
 builder.Services.AddScoped<IUserRepository,UserRepository>();
+builder.Services.AddScoped<TokenService>();
 builder.Services.AddAutoMapper(typeof(UserMapping));
 builder.Services.AddAuthentication(options =>
 {

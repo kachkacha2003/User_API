@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using MyWalletApi.Data;
 using MyWalletApi.Dtos;
 using MyWalletApi.Models;
+using MyWalletApi.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -16,11 +17,13 @@ namespace MyWalletApi.UserRepository
         private readonly UserDbContext data;
         private readonly IMapper mapper;
         private readonly IConfiguration  configuration;
+        private readonly TokenService tokenService;
 
-        public UserRepository(UserDbContext userDbContext,IMapper mapper,IConfiguration configuration) {
+        public UserRepository(UserDbContext userDbContext,IMapper mapper,IConfiguration configuration, TokenService tokenService) {
             data = userDbContext;
             this.mapper = mapper;
             this.configuration= configuration;
+            this.tokenService = tokenService;
 
             
         }
@@ -49,43 +52,8 @@ namespace MyWalletApi.UserRepository
             return mapper.Map<List<UserDto>>(users);
         }
 
-        public string GenerateToken(User user)
-        {
-            var claims = new[]
-  {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-    };
-            if (Environment.GetEnvironmentVariable("Key") == null)
-            {
-                throw new Exception();
-            }
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("Key")));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+       
 
-            var token = new JwtSecurityToken(
-                issuer: configuration["JwtSettings:Issuer"],
-                audience: configuration["JwtSettings:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: creds);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        public async Task<string> LoginUser(LoginUserDto loginUser)
-        {
-            var user = await data.Users.FirstOrDefaultAsync(x => x.Username == loginUser.Username);
-
-            if (user != null && BCrypt.Net.BCrypt.Verify(loginUser.Password, user.Password))
-            {
-              
-                return GenerateToken(user);
-            }
-            else
-            {
-                return "";
-            }
-        }
+       
     }
 }

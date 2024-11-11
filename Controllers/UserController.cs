@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MyWalletApi.Data;
 using MyWalletApi.Dtos;
+using MyWalletApi.Models;
+using MyWalletApi.Services;
 using MyWalletApi.UserRepository;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,17 +17,20 @@ namespace MyWalletApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class UserController : ControllerBase
 
     {
         private readonly UserDbContext data;
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration configuration;
-        public UserController(IUserRepository _userRepository, UserDbContext data,IConfiguration configuration)
+        private readonly TokenService tokenService;
+        public UserController(IUserRepository _userRepository, UserDbContext data,IConfiguration configuration,TokenService tokenService)
         {
             this._userRepository = _userRepository;
             this.data = data;
             this.configuration = configuration;
+            this.tokenService = tokenService;
         }
 
 
@@ -86,13 +91,37 @@ namespace MyWalletApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var result=await _userRepository.LoginUser(loginUser);
-            if (result != "")
+            var user = await data.Users.FirstOrDefaultAsync(x => x.Username == loginUser.Username);
+
+            if (user != null && BCrypt.Net.BCrypt.Verify(loginUser.Password, user.Password))
             {
-                return Ok(result);
+
+                var accessToken = tokenService.GenerateAccessToken(user);
+                var refreshToken = await tokenService.GenerateRefreshTokenAsync(user);
+
+                return Ok(new
+                {
+                    AccessToken = accessToken,
+                    RefreshToken = refreshToken.Token
+                });
             }
+           
             return BadRequest("please write correct Username or Password");
 
         }
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
+        {
+            try
+            {
+                var newAccessToken = await tokenService.RefreshAccessTokenAsync(request.RefreshToken);
+                return Ok(new { AccessToken = newAccessToken });
+            }
+            catch (SecurityTokenException)
+            {
+                return Unauthorized("Invalid or expired refresh token");
+            }
+        }
+
     }
 }
